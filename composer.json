@@ -1,0 +1,29 @@
+{
+    "name": "phrozenbyte/phpunit-throwable-asserts",
+    "type": "library",
+    "description": "Provides various Throwable-related PHPUnit assertions.",
+    "keywords": [ "php", "phpunit", "phpunit-extension", "phpunit-assertions" ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Rudolf",
+            "homepage": "https://www.daniel-rudolf.de/"
+        }
+    ],
+    "support": {
+        "docs": "https://github.com/PhrozenByte/phpunit-throwable-asserts",
+        "issues": "https://github.com/PhrozenByte/phpunit-throwable-asserts/issues",
+        "source": "https://github.com/PhrozenByte/phpunit-throwable-asserts"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhrozenByte\\PHPUnitThrowableAsserts\\": "src"
+        }
+    },
+    "require": {
+        "php": "^7.2 || ^8.0"
+    },
+    "conflict": {
+        "phpunit/phpunit": "<8.0"
+    }
+}
