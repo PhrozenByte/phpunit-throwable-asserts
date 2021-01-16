@@ -167,24 +167,9 @@ class CallableThrows extends Constraint
     {
         $failureDescription = sprintf('Failed asserting that %s.', $this->failureDescription($other));
 
-        if ($throwable !== null) {
-            $throwableDescription = sprintf('Encountered invalid %s', get_class($throwable));
-
-            if ($this->code !== null) {
-                $throwableDescription .= sprintf(' with code %s', $throwable->getCode());
-            }
-
-            if ($this->messageConstraint) {
-                if ($throwable->getMessage() === '') {
-                    $throwableDescription .= (($this->code !== null) ? ' and' : '') . ' without a message';
-                } elseif ($comparisonFailure !== null) {
-                    $throwableDescription .= (($this->code !== null) ? ' and' : ' with') . ' an invalid message';
-                } else {
-                    $throwableDescription .= sprintf(': %s', $throwable->getMessage());
-                }
-            }
-
-            $failureDescription .= "\n" . $throwableDescription . '.';
+        $throwableFailureDescription = $this->throwableFailureDescription($throwable, ($comparisonFailure === null));
+        if ($throwableFailureDescription) {
+            $failureDescription .= "\n" . $throwableFailureDescription;
         }
 
         $additionalFailureDescription = $this->additionalFailureDescription($other);
@@ -200,6 +185,39 @@ class CallableThrows extends Constraint
             $failureDescription,
             $comparisonFailure
         );
+    }
+
+    /**
+     * Returns additional failure description for a Throwable
+     *
+     * @param Throwable|null $throwable      the Throwable that was thrown
+     * @param bool           $includeMessage whether the failure description should include the Throwable's message
+     *
+     * @return string the failure description
+     */
+    protected function throwableFailureDescription(?Throwable $throwable, bool $includeMessage = false): string
+    {
+        if ($throwable === null) {
+            return '';
+        }
+
+        $failureDescription = sprintf('Encountered invalid %s', get_class($throwable));
+
+        if ($this->code !== null) {
+            $failureDescription .= sprintf(' with code %s', $throwable->getCode());
+        }
+
+        if ($this->messageConstraint) {
+            if ($throwable->getMessage() === '') {
+                $failureDescription .= (($this->code !== null) ? ' and' : '') . ' without a message';
+            } elseif (!$includeMessage) {
+                $failureDescription .= (($this->code !== null) ? ' and' : ' with') . ' an invalid message';
+            } else {
+                $failureDescription .= sprintf(': %s', $throwable->getMessage());
+            }
+        }
+
+        return $failureDescription . '.';
     }
 
     /**
