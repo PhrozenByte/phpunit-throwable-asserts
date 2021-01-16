@@ -144,4 +144,30 @@ trait ThrowableAssertsTrait
             $throwableExactMatch
         );
     }
+
+    /**
+     * Returns a new instance of CallableProxy.
+     * *
+     * @param callable $callable     the callable to invoke
+     * @param mixed    ...$arguments the arguments to pass to the callable
+     *
+     * @return CallableProxy
+     */
+    public static function callableProxy(callable $callable, ...$arguments): CallableProxy
+    {
+        return new CallableProxy($callable, ...$arguments);
+    }
+
+    /**
+     * Returns a new instance of CachedCallableProxy.
+     * *
+     * @param callable $callable     the callable to invoke
+     * @param mixed    ...$arguments the arguments to pass to the callable
+     *
+     * @return CallableProxy
+     */
+    public static function cachedCallableProxy(callable $callable, ...$arguments): CachedCallableProxy
+    {
+        return new CachedCallableProxy($callable, $arguments);
+    }
 }

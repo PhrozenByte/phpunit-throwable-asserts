@@ -23,6 +23,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidArgumentException;
+use PhrozenByte\PHPUnitThrowableAsserts\CallableProxy;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Throwable;
 
@@ -41,8 +42,6 @@ use Throwable;
  */
 class CallableThrows extends Constraint
 {
-    use CallableThrowsTrait;
-
     /** @var string */
     protected $className;
 
@@ -229,7 +228,11 @@ class CallableThrows extends Constraint
             return $this->exporter()->export($other) . ' is a callable that ' . $this->toString();
         }
 
-        return $this->describeCallable($other) . ' ' . $this->toString();
+        if (!is_object($other) || !($other instanceof CallableProxy)) {
+            $other = new CallableProxy($other);
+        }
+
+        return $other->toString() . ' ' . $this->toString();
     }
 
     /**

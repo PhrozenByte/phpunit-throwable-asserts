@@ -17,44 +17,76 @@
 
 declare(strict_types=1);
 
-namespace PhrozenByte\PHPUnitThrowableAsserts\Constraint;
+namespace PhrozenByte\PHPUnitThrowableAsserts;
 
 use Closure;
+use PHPUnit\Framework\SelfDescribing;
 use ReflectionException;
 use ReflectionFunction;
 
 /**
- * Common methods for the CallableThrows and CallableThrowsNot constraints.
+ * A simple proxy class for callables.
+ *
+ * This is a helper class to invoke a callable using a given set of arguments.
+ * CallableProxy's advantage over an anonymous function is the fact, that it
+ * can describe itself and doesn't just end up being called `{closure}()`.
  */
-trait CallableThrowsTrait
+class CallableProxy implements SelfDescribing
 {
+    /** @var callable */
+    protected $callable;
+
+    /** @var mixed[] */
+    protected $arguments;
+
     /**
-     * Returns a human-readable string representation of a callable.
+     * CallableProxy constructor.
+     *
+     * @param callable $callable     the callable to invoke
+     * @param mixed    ...$arguments the arguments to pass to the callable
+     */
+    public function __construct(callable $callable, ...$arguments)
+    {
+        $this->callable = $callable;
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * Invokes the callable with the given arguments.
+     *
+     * @return mixed
+     */
+    public function __invoke()
+    {
+        $callable = $this->callable;
+        return $callable(...$this->arguments);
+    }
+
+    /**
+     * Returns a human-readable string representation of the callable.
      *
      * All strings match the format `<function>()` or `<class>::<function>()`.
      * `{closure}` as function name describes a anonymous function, optionally
      * also indicating the Closure's scope as class. If a callable's function
      * name is unknown, `{callable}` is returned.
      *
-     * @param callable $callable the callable to describe
-     *
      * @return string string representation of the callable
      */
-    protected function describeCallable(callable $callable): string
+    public function toString(): string
     {
-        if (is_string($callable)) {
-            return sprintf('%s()', $callable);
+        if (is_string($this->callable)) {
+            return sprintf('%s()', $this->callable);
         }
 
-        if (is_array($callable)) {
-            $className = is_object($callable[0]) ? get_class($callable[0]) : $callable[0];
-            return sprintf('%s::%s()', $className, $callable[1]);
+        if (is_array($this->callable)) {
+            $className = is_object($this->callable[0]) ? get_class($this->callable[0]) : $this->callable[0];
+            return sprintf('%s::%s()', $className, $this->callable[1]);
         }
 
-        if (is_object($callable)) {
-            if ($callable instanceof Closure) {
+        if (is_object($this->callable)) {
+            if ($this->callable instanceof Closure) {
                 try {
-                    $closureReflector = new ReflectionFunction($callable);
+                    $closureReflector = new ReflectionFunction($this->callable);
 
                     $closureName = $closureReflector->getName();
                     if (substr_compare($closureName, '\\{closure}', -10) === 0) {
@@ -72,7 +104,7 @@ trait CallableThrowsTrait
                 }
             }
 
-            return sprintf('%s::__invoke()', get_class($callable));
+            return sprintf('%s::__invoke()', get_class($this->callable));
         }
 
         return '{callable}()';
