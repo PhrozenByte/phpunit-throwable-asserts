@@ -25,6 +25,7 @@ use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidArgumentException;
 use PhrozenByte\PHPUnitThrowableAsserts\CallableProxy;
+use SebastianBergmann\Comparator\ComparisonFailure;
 use Throwable;
 
 /**
@@ -140,13 +141,68 @@ class CallableThrowsNot extends Constraint
             }
 
             if (!$returnResult) {
-                $this->fail($other, $description);
+                $this->fail($other, $description, null, $throwable);
             }
 
             return false;
         }
 
         return $returnResult ? true : null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null, Throwable $throwable = null): void
+    {
+        $failureDescription = sprintf('Failed asserting that %s.', $this->failureDescription($other));
+
+        $throwableFailureDescription = $this->throwableFailureDescription($throwable);
+        if ($throwableFailureDescription) {
+            $failureDescription .= "\n" . $throwableFailureDescription;
+        }
+
+        $additionalFailureDescription = $this->additionalFailureDescription($other);
+        if ($additionalFailureDescription) {
+            $failureDescription .= "\n" . $additionalFailureDescription;
+        }
+
+        if ($description) {
+            $failureDescription = $description . "\n" . $failureDescription;
+        }
+
+        throw new ExpectationFailedException(
+            $failureDescription,
+            $comparisonFailure
+        );
+    }
+
+    /**
+     * Returns additional failure description for a Throwable
+     *
+     * @param Throwable|null $throwable the Throwable that was thrown
+     *
+     * @return string the failure description
+     */
+    protected function throwableFailureDescription(?Throwable $throwable): string
+    {
+        if ($throwable === null) {
+            return '';
+        }
+
+        $failureDescription = sprintf('Encountered invalid %s', get_class($throwable));
+
+        if ($throwable->getCode() !== 0) {
+            $failureDescription .= sprintf(' with code %s', $throwable->getCode());
+        }
+
+        if ($throwable->getMessage() === '') {
+            $failureDescription .= (($throwable->getCode() !== 0) ? ' and' : '') . ' without a message';
+        } else {
+            $failureDescription .= sprintf(': %s', $throwable->getMessage());
+        }
+
+        return $failureDescription . '.';
     }
 
     /**

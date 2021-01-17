@@ -202,18 +202,16 @@ class CallableThrows extends Constraint
 
         $failureDescription = sprintf('Encountered invalid %s', get_class($throwable));
 
-        if ($this->code !== null) {
+        if ($throwable->getCode() !== 0) {
             $failureDescription .= sprintf(' with code %s', $throwable->getCode());
         }
 
-        if ($this->messageConstraint) {
-            if ($throwable->getMessage() === '') {
-                $failureDescription .= (($this->code !== null) ? ' and' : '') . ' without a message';
-            } elseif (!$includeMessage) {
-                $failureDescription .= (($this->code !== null) ? ' and' : ' with') . ' an invalid message';
-            } else {
-                $failureDescription .= sprintf(': %s', $throwable->getMessage());
-            }
+        if ($throwable->getMessage() === '') {
+            $failureDescription .= (($throwable->getCode() !== 0) ? ' and' : '') . ' without a message';
+        } elseif (!$includeMessage) {
+            $failureDescription .= (($throwable->getCode() !== 0) ? ' and' : ' with') . ' an invalid message';
+        } else {
+            $failureDescription .= sprintf(': %s', $throwable->getMessage());
         }
 
         return $failureDescription . '.';
