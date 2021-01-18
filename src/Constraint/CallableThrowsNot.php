@@ -20,12 +20,8 @@ declare(strict_types=1);
 namespace PhrozenByte\PHPUnitThrowableAsserts\Constraint;
 
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\InvalidArgumentException;
-use PhrozenByte\PHPUnitThrowableAsserts\CallableProxy;
-use SebastianBergmann\Comparator\ComparisonFailure;
 use Throwable;
 
 /**
@@ -45,20 +41,8 @@ use Throwable;
  * of the Throwable's class is required are passed in the constructor. The
  * callable is the value to evaluate.
  */
-class CallableThrowsNot extends Constraint
+class CallableThrowsNot extends AbstractCallableThrows
 {
-    /** @var string */
-    protected $className;
-
-    /** @var Constraint|null */
-    protected $messageConstraint;
-
-    /** @var int|string|null */
-    protected $code;
-
-    /** @var bool */
-    protected $exactMatch;
-
     /**
      * CallableThrowsNot constructor.
      *
@@ -75,19 +59,7 @@ class CallableThrowsNot extends Constraint
         $code = null,
         bool $exactMatch = false
     ) {
-        $className = ltrim($className, '\\');
-        if (!is_a($className, Throwable::class, true)) {
-            InvalidArgumentException::create(1, sprintf('instance of %s', Throwable::class));
-        }
-
-        if (($message !== null) && !($message instanceof Constraint)) {
-            $message = new IsEqual($message);
-        }
-
-        $this->className = $className;
-        $this->messageConstraint = $message;
-        $this->code = $code;
-        $this->exactMatch = $exactMatch;
+        parent::__construct($className, $message, $code, $exactMatch);
     }
 
     /**
@@ -148,84 +120,5 @@ class CallableThrowsNot extends Constraint
         }
 
         return $returnResult ? true : null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null, Throwable $throwable = null): void
-    {
-        $failureDescription = sprintf('Failed asserting that %s.', $this->failureDescription($other));
-
-        $throwableFailureDescription = $this->throwableFailureDescription($throwable);
-        if ($throwableFailureDescription) {
-            $failureDescription .= "\n" . $throwableFailureDescription;
-        }
-
-        $additionalFailureDescription = $this->additionalFailureDescription($other);
-        if ($additionalFailureDescription) {
-            $failureDescription .= "\n" . $additionalFailureDescription;
-        }
-
-        if ($description) {
-            $failureDescription = $description . "\n" . $failureDescription;
-        }
-
-        throw new ExpectationFailedException(
-            $failureDescription,
-            $comparisonFailure
-        );
-    }
-
-    /**
-     * Returns additional failure description for a Throwable
-     *
-     * @param Throwable|null $throwable the Throwable that was thrown
-     *
-     * @return string the failure description
-     */
-    protected function throwableFailureDescription(?Throwable $throwable): string
-    {
-        if ($throwable === null) {
-            return '';
-        }
-
-        $failureDescription = sprintf('Encountered invalid %s', get_class($throwable));
-
-        if ($throwable->getCode() !== 0) {
-            $failureDescription .= sprintf(' with code %s', $throwable->getCode());
-        }
-
-        if ($throwable->getMessage() === '') {
-            $failureDescription .= (($throwable->getCode() !== 0) ? ' and' : '') . ' without a message';
-        } else {
-            $failureDescription .= sprintf(': %s', $throwable->getMessage());
-        }
-
-        return $failureDescription . '.';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function failureDescription($other): string
-    {
-        if (!is_callable($other)) {
-            return $this->exporter()->export($other) . ' is a callable that ' . $this->toString();
-        }
-
-        if (!is_object($other) || !($other instanceof CallableProxy)) {
-            $other = new CallableProxy($other);
-        }
-
-        return $other->toString() . ' ' . $this->toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function count(): int
-    {
-        return 1 + (($this->messageConstraint !== null) ? 1 : 0) + (($this->code !== null) ? 1 : 0);
     }
 }

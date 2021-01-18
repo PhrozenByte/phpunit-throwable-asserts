@@ -20,11 +20,8 @@ declare(strict_types=1);
 namespace PhrozenByte\PHPUnitThrowableAsserts\Constraint;
 
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidArgumentException;
-use PhrozenByte\PHPUnitThrowableAsserts\CallableProxy;
-use SebastianBergmann\Comparator\ComparisonFailure;
 use Throwable;
 
 /**
@@ -40,20 +37,8 @@ use Throwable;
  * the Throwable's class is required, and the Throwable base class name are
  * passed in the constructor. The callable is the value to evaluate.
  */
-class CallableThrows extends Constraint
+class CallableThrows extends AbstractCallableThrows
 {
-    /** @var string */
-    protected $className;
-
-    /** @var Constraint|null */
-    protected $messageConstraint;
-
-    /** @var int|string|null */
-    protected $code;
-
-    /** @var bool */
-    protected $exactMatch;
-
     /** @var string */
     protected $baseClassName;
 
@@ -75,23 +60,17 @@ class CallableThrows extends Constraint
         bool $exactMatch = false,
         string $baseClassName = Throwable::class
     ) {
+        $baseClassName = ltrim($baseClassName, '\\');
         if (!is_a($baseClassName, Throwable::class, true)) {
             InvalidArgumentException::create(5, sprintf('instance of %s', Throwable::class));
         }
 
-        $className = ltrim($className, '\\');
         if (!is_a($className, $baseClassName, true)) {
             InvalidArgumentException::create(1, sprintf('instance of %s (argument #5)', $baseClassName));
         }
 
-        if (($message !== null) && !($message instanceof Constraint)) {
-            $message = new IsEqual($message);
-        }
+        parent::__construct($className, $message, $code, $exactMatch);
 
-        $this->className = $className;
-        $this->messageConstraint = $message;
-        $this->code = $code;
-        $this->exactMatch = $exactMatch;
         $this->baseClassName = $baseClassName;
     }
 
@@ -157,87 +136,5 @@ class CallableThrows extends Constraint
         }
 
         return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null, Throwable $throwable = null): void
-    {
-        $failureDescription = sprintf('Failed asserting that %s.', $this->failureDescription($other));
-
-        $throwableFailureDescription = $this->throwableFailureDescription($throwable, ($comparisonFailure === null));
-        if ($throwableFailureDescription) {
-            $failureDescription .= "\n" . $throwableFailureDescription;
-        }
-
-        $additionalFailureDescription = $this->additionalFailureDescription($other);
-        if ($additionalFailureDescription) {
-            $failureDescription .= "\n" . $additionalFailureDescription;
-        }
-
-        if ($description) {
-            $failureDescription = $description . "\n" . $failureDescription;
-        }
-
-        throw new ExpectationFailedException(
-            $failureDescription,
-            $comparisonFailure
-        );
-    }
-
-    /**
-     * Returns additional failure description for a Throwable
-     *
-     * @param Throwable|null $throwable      the Throwable that was thrown
-     * @param bool           $includeMessage whether the failure description should include the Throwable's message
-     *
-     * @return string the failure description
-     */
-    protected function throwableFailureDescription(?Throwable $throwable, bool $includeMessage = false): string
-    {
-        if ($throwable === null) {
-            return '';
-        }
-
-        $failureDescription = sprintf('Encountered invalid %s', get_class($throwable));
-
-        if ($throwable->getCode() !== 0) {
-            $failureDescription .= sprintf(' with code %s', $throwable->getCode());
-        }
-
-        if ($throwable->getMessage() === '') {
-            $failureDescription .= (($throwable->getCode() !== 0) ? ' and' : '') . ' without a message';
-        } elseif (!$includeMessage) {
-            $failureDescription .= (($throwable->getCode() !== 0) ? ' and' : ' with') . ' an invalid message';
-        } else {
-            $failureDescription .= sprintf(': %s', $throwable->getMessage());
-        }
-
-        return $failureDescription . '.';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function failureDescription($other): string
-    {
-        if (!is_callable($other)) {
-            return $this->exporter()->export($other) . ' is a callable that ' . $this->toString();
-        }
-
-        if (!is_object($other) || !($other instanceof CallableProxy)) {
-            $other = new CallableProxy($other);
-        }
-
-        return $other->toString() . ' ' . $this->toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function count(): int
-    {
-        return 1 + (($this->messageConstraint !== null) ? 1 : 0) + (($this->code !== null) ? 1 : 0);
     }
 }
