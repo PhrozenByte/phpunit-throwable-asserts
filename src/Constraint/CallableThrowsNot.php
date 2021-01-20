@@ -7,7 +7,7 @@
  * This file is copyrighted by the contributors recorded in the version control
  * history of the file, available from the following original location:
  *
- * <https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/Constraint/ExceptionConstraint.php>
+ * <https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/Constraint/CallableThrowsNot.php>
  *
  * @license http://opensource.org/licenses/MIT The MIT License
  *
