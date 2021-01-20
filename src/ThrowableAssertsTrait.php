@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace PhrozenByte\PHPUnitThrowableAsserts;
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidArgumentException;
@@ -30,13 +31,15 @@ use Throwable;
 trait ThrowableAssertsTrait
 {
     /**
-     * @param callable $callable
-     * @param string   $throwableClassName
-     * @param null     $throwableMessage
-     * @param null     $throwableCode
-     * @param bool     $throwableExactMatch
-     * @param string   $throwableBaseClassName
-     * @param string   $message
+     * Asserts that a callable throws a specific Throwable.
+     *
+     * @param callable               $callable               the callable to call
+     * @param string                 $throwableClassName     assert that a Throwable of the given class is thrown
+     * @param Constraint|string|null $throwableMessage       assert that its message matches the given constraint
+     * @param int|string|null        $throwableCode          assert that its code matches the given one
+     * @param bool                   $throwableExactMatch    whether an exact match of the class name is required
+     * @param string                 $throwableBaseClassName catch all Throwables of the given class
+     * @param string                 $message                additional information about the test
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -64,11 +67,13 @@ trait ThrowableAssertsTrait
     }
 
     /**
-     * @param string $throwableClassName
-     * @param null   $throwableMessage
-     * @param null   $throwableCode
-     * @param bool   $throwableExactMatch
-     * @param string $throwableBaseClassName
+     * Returns a new instance of the CallableThrows constraint.
+     *
+     * @param string                 $throwableClassName     assert that a Throwable of the given class is thrown
+     * @param Constraint|string|null $throwableMessage       assert that its message matches the given constraint
+     * @param int|string|null        $throwableCode          assert that its code matches the given one
+     * @param bool                   $throwableExactMatch    whether an exact match of the class name is required
+     * @param string                 $throwableBaseClassName catch all Throwables of the given class
      *
      * @return CallableThrows
      *
@@ -91,12 +96,14 @@ trait ThrowableAssertsTrait
     }
 
     /**
-     * @param callable $callable
-     * @param string   $throwableClassName
-     * @param null     $throwableMessage
-     * @param null     $throwableCode
-     * @param bool     $throwableExactMatch
-     * @param string   $message
+     * Asserts that a callable does not throw a specific Throwable.
+     *
+     * @param callable               $callable               the callable to call
+     * @param string                 $throwableClassName     assert that no Throwable of the given class is thrown
+     * @param Constraint|string|null $throwableMessage       catch Throwables matching the given message constraint only
+     * @param int|string|null        $throwableCode          catch Throwables matching the given code only
+     * @param bool                   $throwableExactMatch    whether only Throwables of the given class are caught
+     * @param string                 $message                additional information about the test
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException
@@ -122,10 +129,12 @@ trait ThrowableAssertsTrait
     }
 
     /**
-     * @param string $throwableClassName
-     * @param null   $throwableMessage
-     * @param null   $throwableCode
-     * @param bool   $throwableExactMatch
+     * Returns a new instance of the CallableThrowsNot constraint.
+     *
+     * @param string                 $throwableClassName     assert that no Throwable of the given class is thrown
+     * @param Constraint|string|null $throwableMessage       catch Throwables matching the given message constraint only
+     * @param int|string|null        $throwableCode          catch Throwables matching the given code only
+     * @param bool                   $throwableExactMatch    whether only Throwables of the given class are caught
      *
      * @return CallableThrowsNot
      *
@@ -164,7 +173,7 @@ trait ThrowableAssertsTrait
      * @param callable $callable     the callable to invoke
      * @param mixed    ...$arguments the arguments to pass to the callable
      *
-     * @return CallableProxy
+     * @return CachedCallableProxy
      */
     public static function cachedCallableProxy(callable $callable, ...$arguments): CachedCallableProxy
     {

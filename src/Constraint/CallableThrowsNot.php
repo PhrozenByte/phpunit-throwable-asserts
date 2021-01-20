@@ -31,25 +31,26 @@ use Throwable;
  * the given class, message and code. All conditions must match, otherwise the
  * Throwable is re-thrown.
  *
- * This is NOT the same as negating the CallableThrows constraint, because this
- * constraint will re-throw any non-matching Throwable instead of throwing a
- * ExpectationFailedException. A ExpectationFailedException is only thrown when
- * the callable throws a Throwable matching all conditions.
+ * This is NOT the same as negating the CallableThrows constraint, which
+ * consumes all non-matching Throwables and throws a ExpectationFailedException
+ * instead. CallableThrowsNot will rather re-throw any non-matching Throwable.
+ * A ExpectationFailedException is only thrown when the callable throws a
+ * Throwable matching all given conditions.
  *
  * The class name of the expected Throwable, a optional constraint to match the
  * Throwable's message, the optional code to assert, and whether an exact match
  * of the Throwable's class is required are passed in the constructor. The
- * callable is the value to evaluate.
+ * callable is the value to evaluate (`$other`).
  */
 class CallableThrowsNot extends AbstractCallableThrows
 {
     /**
      * CallableThrowsNot constructor.
      *
-     * @param string                $className  assert that no Throwable of the given class is thrown
-     * @param Constraint|mixed|null $message    catch Throwables with a message matching the given constraint only
-     * @param int|string|null       $code       catch Throwables with the given code only
-     * @param bool                  $exactMatch whether an exact match of the Throwable class is caught only
+     * @param string                 $className  assert that no Throwable of the given class is thrown
+     * @param Constraint|string|null $message    catch Throwables with a message matching the given constraint only
+     * @param int|string|null        $code       catch Throwables with the given code only
+     * @param bool                   $exactMatch whether an exact match of the Throwable class is caught only
      *
      * @throws PHPUnitException
      */

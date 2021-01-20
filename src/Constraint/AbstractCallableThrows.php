@@ -28,6 +28,10 @@ use PhrozenByte\PHPUnitThrowableAsserts\CallableProxy;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Throwable;
 
+/**
+ * Abstract base class for the `CallableThrows` and `CallableThrowsNot`
+ * constraints implementing some common methods.
+ */
 abstract class AbstractCallableThrows extends Constraint
 {
     /** @var string */

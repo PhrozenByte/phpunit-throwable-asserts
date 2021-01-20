@@ -45,11 +45,11 @@ class CallableThrows extends AbstractCallableThrows
     /**
      * CallableThrows constructor.
      *
-     * @param string                $className     assert that a Throwable of the given class is thrown
-     * @param Constraint|mixed|null $message       assert that the Throwable matches the given message constraint
-     * @param int|string|null       $code          assert that the Throwable matches the given code
-     * @param bool                  $exactMatch    whether an exact match of the Throwable class is required
-     * @param string                $baseClassName catch all Throwables of the given class
+     * @param string                 $className     assert that a Throwable of the given class is thrown
+     * @param Constraint|string|null $message       assert that the Throwable matches the given message constraint
+     * @param int|string|null        $code          assert that the Throwable matches the given code
+     * @param bool                   $exactMatch    whether an exact match of the Throwable class is required
+     * @param string                 $baseClassName catch all Throwables of the given class
      *
      * @throws InvalidArgumentException
      */
