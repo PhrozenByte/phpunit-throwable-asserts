@@ -177,6 +177,6 @@ trait ThrowableAssertsTrait
      */
     public static function cachedCallableProxy(callable $callable, ...$arguments): CachedCallableProxy
     {
-        return new CachedCallableProxy($callable, $arguments);
+        return new CachedCallableProxy($callable, ...$arguments);
     }
 }
