@@ -93,6 +93,11 @@ class CallableProxy implements SelfDescribing
                         $closureName = '{closure}';
                     }
 
+                    if ($closureReflector->getClosureThis() !== null) {
+                        $closureThisClassName = get_class($closureReflector->getClosureThis());
+                        return sprintf('%s::%s()', $closureThisClassName, $closureName);
+                    }
+
                     if ($closureReflector->getClosureScopeClass() !== null) {
                         $closureScopeClassName = $closureReflector->getClosureScopeClass()->getName();
                         return sprintf('%s::%s()', $closureScopeClassName, $closureName);
@@ -100,6 +105,7 @@ class CallableProxy implements SelfDescribing
 
                     return sprintf('%s()', $closureName);
                 } catch (ReflectionException $e) {
+                    // ReflectionException is never thrown, the callable typehint ensures a valid function
                     return '{closure}()';
                 }
             }
@@ -107,6 +113,8 @@ class CallableProxy implements SelfDescribing
             return sprintf('%s::__invoke()', get_class($this->callable));
         }
 
+        // fallback to '{callable}()' if all else fails
+        // this is for future PHP versions implementing new ways to describe callables
         return '{callable}()';
     }
 }
