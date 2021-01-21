@@ -62,11 +62,11 @@ class CallableThrows extends AbstractCallableThrows
     ) {
         $baseClassName = ltrim($baseClassName, '\\');
         if (!is_a($baseClassName, Throwable::class, true)) {
-            InvalidArgumentException::create(5, sprintf('instance of %s', Throwable::class));
+            throw InvalidArgumentException::create(5, sprintf('instance of %s', Throwable::class));
         }
 
         if (!is_a($className, $baseClassName, true)) {
-            InvalidArgumentException::create(1, sprintf('instance of %s (argument #5)', $baseClassName));
+            throw InvalidArgumentException::create(1, sprintf('instance of %s (argument #5)', $baseClassName));
         }
 
         parent::__construct($className, $message, $code, $exactMatch);

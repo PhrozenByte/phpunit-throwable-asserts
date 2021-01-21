@@ -60,7 +60,7 @@ abstract class AbstractCallableThrows extends Constraint
     {
         $className = ltrim($className, '\\');
         if (!is_a($className, Throwable::class, true)) {
-            InvalidArgumentException::create(1, sprintf('instance of %s', Throwable::class));
+            throw InvalidArgumentException::create(1, sprintf('instance of %s', Throwable::class));
         }
 
         if (($message !== null) && !($message instanceof Constraint)) {
