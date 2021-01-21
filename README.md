@@ -119,7 +119,7 @@ $this->assertCallableThrows(
 
 ### Constraint `CallableThrowsNot`
 
-The [`CallableThrowsNot` constraint](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/Constraint/CallableThrowsNot.php) asserts that a Callable doesn't throw a specific `Throwable`.
+The [`CallableThrowsNot` constraint](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/Constraint/CallableThrowsNot.php) asserts that a Callable doesn't throw a specific `Throwable`. It can be used as a more specific alternative to PHPUnit's built-in `expectNotToPerformAssertions()` method.
 
 This constraint calls the given Callable (parameter `$callable`) and catches any `Throwable` matching the given class (optional parameter `$throwableClassName`, defaults to `Throwable`), message (optional parameter `$throwableMessage`, defaults to `null`) and code (optional parameter `$throwableCode`, defaults to `null`). All conditions must match, otherwise the `Throwable` is re-thrown. The exception message can either be a string, requiring an exact match, or an arbitrary `Constraint` (e.g. `PHPUnit\Framework\Constraint\StringContains`) to match the exception message. The constraint optionally requires an exact match of the class name (optional parameter `$throwableExactMatch`, defaults to `false`).
 

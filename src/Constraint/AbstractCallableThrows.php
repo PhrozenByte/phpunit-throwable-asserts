@@ -153,6 +153,7 @@ abstract class AbstractCallableThrows extends Constraint
      */
     public function count(): int
     {
-        return 1 + (($this->messageConstraint !== null) ? 1 : 0) + (($this->code !== null) ? 1 : 0);
+        return 1 + (($this->code !== null) ? 1 : 0)
+            + (($this->messageConstraint !== null) ? $this->messageConstraint->count() : 0);
     }
 }
