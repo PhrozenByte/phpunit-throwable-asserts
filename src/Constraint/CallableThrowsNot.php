@@ -70,7 +70,7 @@ class CallableThrowsNot extends AbstractCallableThrows
     {
         return sprintf('does not throw a %s', $this->className)
             . ($this->exactMatch ? ' (exact match)' : '')
-            . (($this->code !== null) ? sprintf(' with code %s', $this->code) : '')
+            . (($this->code !== null) ? sprintf(' with code %s', $this->exporter()->export($this->code)) : '')
             . (($this->messageConstraint && ($this->code !== null)) ? ' and' : '')
             . ($this->messageConstraint ? ' whose message ' . $this->messageConstraint->toString() : '');
     }

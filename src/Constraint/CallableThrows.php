@@ -81,7 +81,7 @@ class CallableThrows extends AbstractCallableThrows
     {
         return sprintf('throws a %s', $this->className)
             . ($this->exactMatch ? ' (exact match)' : '')
-            . (($this->code !== null) ? sprintf(' with code %s', $this->code) : '')
+            . (($this->code !== null) ? sprintf(' with code %s', $this->exporter()->export($this->code)) : '')
             . (($this->messageConstraint && ($this->code !== null)) ? ' and' : '')
             . ($this->messageConstraint ? ' whose message ' . $this->messageConstraint->toString() : '');
     }
