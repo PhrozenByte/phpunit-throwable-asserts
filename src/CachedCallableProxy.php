@@ -20,7 +20,7 @@ declare(strict_types=1);
 namespace PhrozenByte\PHPUnitThrowableAsserts;
 
 /**
- * A simple proxy class for callables with return value caching.
+ * A simple proxy class for Callables with return value caching.
  *
  * @see CallableProxy
  */
@@ -39,7 +39,7 @@ class CachedCallableProxy extends CallableProxy
     }
 
     /**
-     * Returns the cached return value of the callable from its last invocation.
+     * Returns the cached return value of the Callable from its last invocation.
      *
      * @return mixed
      */

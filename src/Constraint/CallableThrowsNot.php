@@ -25,22 +25,22 @@ use PHPUnit\Framework\ExpectationFailedException;
 use Throwable;
 
 /**
- * Constraint that asserts that a callable doesn't throw a specific Throwable.
+ * Constraint that asserts that a Callable doesn't throw a specific Throwable.
  *
- * This constraint calls the given callable and catches any Throwable matching
+ * This constraint calls the given Callable and catches any Throwable matching
  * the given class, message and code. All conditions must match, otherwise the
  * Throwable is re-thrown.
  *
  * This is NOT the same as negating the CallableThrows constraint, which
  * consumes all non-matching Throwables and throws a ExpectationFailedException
  * instead. CallableThrowsNot will rather re-throw any non-matching Throwable.
- * A ExpectationFailedException is only thrown when the callable throws a
+ * A ExpectationFailedException is only thrown when the Callable throws a
  * Throwable matching all given conditions.
  *
  * The class name of the expected Throwable, a optional constraint to match the
  * Throwable's message, the optional code to assert, and whether an exact match
  * of the Throwable's class is required are passed in the constructor. The
- * callable is the value to evaluate (`$other`).
+ * Callable is the value to evaluate (`$other`).
  */
 class CallableThrowsNot extends AbstractCallableThrows
 {

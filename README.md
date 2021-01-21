@@ -1,9 +1,9 @@
 PHPUnitThrowableAssertions
 ==========================
 
-[`PHPUnitThrowableAssertions`](https://github.com/PhrozenByte/phpunit-throwable-asserts) is a small [PHPUnit](https://phpunit.de/) extension to assert that callables do or do not throw a specific Exception, Error, or Throwable.
+[`PHPUnitThrowableAssertions`](https://github.com/PhrozenByte/phpunit-throwable-asserts) is a small [PHPUnit](https://phpunit.de/) extension to assert that Callables do or do not throw a specific Exception, Error, or Throwable.
 
-This PHPUnit extension allows developers to test whether callables throw exceptions, errors and other throwables in a single assertion using the more intuitive "assert that" approach. It's a replacement for PHPUnit's built-in `expectException()`, `expectExceptionMessage()` and `expectExceptionCode()` methods - just more powerful.
+This PHPUnit extension allows developers to test whether Callables throw Exceptions, Errors and other Throwables in a single assertion using the more intuitive "assert that" approach. It's a replacement for PHPUnit's built-in `expectException()`, `expectExceptionMessage()` and `expectExceptionCode()` methods - just more powerful.
 
 You want more PHPUnit constraints? Check out [`PHPUnitArrayAssertions`](https://github.com/PhrozenByte/phpunit-array-asserts)! It introduces various assertions to test PHP arrays and array-like data in a single assertion. The PHPUnit extension is often used for API testing to assert whether an API result matches certain criteria - regarding both its structure, and the data.
 
@@ -40,15 +40,15 @@ There are three (equivalent) options to use `PHPUnitThrowableAssertions`:
 
 All options do exactly the same. Creating new constraint instances is useful for advanced assertions, e.g. together with `PHPUnit\Framework\Constraint\LogicalAnd`.
 
-If you want to pass arguments to your callable, you might want to use [`CallableProxy`](#callableproxy-and-cachedcallableproxy). If you must access the callable's return value, use `CachedCallableProxy` instead (specifically its `getReturnValue()` method). Using `CallableProxy` vastly improves error handling.
+If you want to pass arguments to your Callable, you might want to use [`CallableProxy`](#callableproxy-and-cachedcallableproxy). If you must access the Callable's return value, use `CachedCallableProxy` instead (specifically its `getReturnValue()` method). Using `CallableProxy` vastly improves error handling.
 
 As explained above, `PHPUnitThrowableAssertions` is a more powerful alternative to PHPUnit's built-in `expectException()`. However, please note that PHPUnit's built-in `expectExceptionMessage()` matches sub strings (i.e. `$this->expectExceptionMessage('test')` doesn't just match the message `"test"`, but also `"This is a test"`), while `PHPUnitThrowableAssertions` checks for equality by default (i.e. `$message = 'test'` matches the message `"test"` only). However, `PHPUnitThrowableAssertions` allows you to not just use strings, but also arbitrary constraints. So, for example, to achieve sub string matching, pass an instance of the `PHPUnit\Framework\Constraint\StringContains` constraint instead (i.e. `$message = $this->stringContains('test')` also matches the message `"This is a test"`).
 
 ### Constraint `CallableThrows`
 
-The [`CallableThrows` constraint](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/Constraint/CallableThrows.php) asserts that a callable throws a specific `Throwable`.
+The [`CallableThrows` constraint](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/Constraint/CallableThrows.php) asserts that a Callable throws a specific `Throwable`.
 
-This constraint calls the given callable (parameter `$callable`) and catches any `Throwable` matching the given base class (parameter `$throwableBaseClassName`, defaults to `Throwable`). Any other `Throwable` isn't caught. It then asserts that the `Throwable`'s class (optional parameter `$throwableClassName`, defaults to `Throwable`), message (optional parameter `$throwableMessage`, defaults to `null`) and code (optional parameter `$throwableCode`, defaults to `null`) match the expected, or throws a  `ExpectationFailedException` otherwise. The exception message can either be a string, requiring an exact match, or an arbitrary `Constraint` (e.g. `PHPUnit\Framework\Constraint\StringContains`) to match the exception message. The constraint optionally requires an exact match of the class name (optional parameter `$throwableExactMatch`, defaults to `false`).
+This constraint calls the given Callable (parameter `$callable`) and catches any `Throwable` matching the given base class (parameter `$throwableBaseClassName`, defaults to `Throwable`). Any other `Throwable` isn't caught. It then asserts that the `Throwable`'s class (optional parameter `$throwableClassName`, defaults to `Throwable`), message (optional parameter `$throwableMessage`, defaults to `null`) and code (optional parameter `$throwableCode`, defaults to `null`) match the expected, or throws a  `ExpectationFailedException` otherwise. The exception message can either be a string, requiring an exact match, or an arbitrary `Constraint` (e.g. `PHPUnit\Framework\Constraint\StringContains`) to match the exception message. The constraint optionally requires an exact match of the class name (optional parameter `$throwableExactMatch`, defaults to `false`).
 
 The `ThrowableAssertsTrait` trait exposes two public methods for the `CallableThrows` constraint: Use `ThrowableAssertsTrait::assertCallableThrows()` to perform an assertion, and `ThrowableAssertsTrait::callableThrows()` to create a new instance of the `CallableThrows` constraint.
 
@@ -57,7 +57,7 @@ The `ThrowableAssertsTrait` trait exposes two public methods for the `CallableTh
 ```php
 // using `PhrozenByte\PHPUnitThrowableAsserts\ThrowableAssertsTrait` trait
 ThrowableAssertsTrait::assertCallableThrows(
-    callable $callable,                                // the callable to call
+    callable $callable,                                // the Callable to call
     string $throwableClassName = Throwable::class,     // assert that a Throwable of the given class is thrown
     Constraint|string $throwableMessage = null,        // assert that its message matches the given constraint
     int|string $throwableCode = null,                  // assert that its code matches the given one
@@ -119,11 +119,11 @@ $this->assertCallableThrows(
 
 ### Constraint `CallableThrowsNot`
 
-The [`CallableThrowsNot` constraint](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/Constraint/CallableThrowsNot.php) asserts that a callable doesn't throw a specific `Throwable`.
+The [`CallableThrowsNot` constraint](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/Constraint/CallableThrowsNot.php) asserts that a Callable doesn't throw a specific `Throwable`.
 
-This constraint calls the given callable (parameter `$callable`) and catches any `Throwable` matching the given class (optional parameter `$throwableClassName`, defaults to `Throwable`), message (optional parameter `$throwableMessage`, defaults to `null`) and code (optional parameter `$throwableCode`, defaults to `null`). All conditions must match, otherwise the `Throwable` is re-thrown. The exception message can either be a string, requiring an exact match, or an arbitrary `Constraint` (e.g. `PHPUnit\Framework\Constraint\StringContains`) to match the exception message. The constraint optionally requires an exact match of the class name (optional parameter `$throwableExactMatch`, defaults to `false`).
+This constraint calls the given Callable (parameter `$callable`) and catches any `Throwable` matching the given class (optional parameter `$throwableClassName`, defaults to `Throwable`), message (optional parameter `$throwableMessage`, defaults to `null`) and code (optional parameter `$throwableCode`, defaults to `null`). All conditions must match, otherwise the `Throwable` is re-thrown. The exception message can either be a string, requiring an exact match, or an arbitrary `Constraint` (e.g. `PHPUnit\Framework\Constraint\StringContains`) to match the exception message. The constraint optionally requires an exact match of the class name (optional parameter `$throwableExactMatch`, defaults to `false`).
 
-This is *not* the same as negating the `CallableThrows` constraint, which consumes all non-matching `Throwable`s and throws a `ExpectationFailedException` instead. `CallableThrowsNot` will rather re-throw any non-matching `Throwable`. A `ExpectationFailedException` is only thrown when the callable throws a `Throwable` matching all given conditions.
+This is *not* the same as negating the `CallableThrows` constraint, which consumes all non-matching `Throwable`s and throws a `ExpectationFailedException` instead. `CallableThrowsNot` will rather re-throw any non-matching `Throwable`. A `ExpectationFailedException` is only thrown when the Callable throws a `Throwable` matching all given conditions.
 
 The `ThrowableAssertsTrait` trait exposes two public methods for the `CallableThrowsNot` constraint: Use `ThrowableAssertsTrait::assertCallableThrowsNot()` to perform an assertion, and `ThrowableAssertsTrait::callableThrowsNot()` to create a new instance of the `CallableThrowsNot` constraint.
 
@@ -132,7 +132,7 @@ The `ThrowableAssertsTrait` trait exposes two public methods for the `CallableTh
 ```php
 // using `PhrozenByte\PHPUnitThrowableAsserts\ThrowableAssertsTrait` trait
 ThrowableAssertsTrait::assertCallableThrowsNot(
-    callable $callable,                            // the callable to call
+    callable $callable,                            // the Callable to call
     string $throwableClassName = Throwable::class, // assert that no Throwable of the given class is thrown
     Constraint|string $throwableMessage = null,    // catch Throwables matching the given message constraint only
     int|string $throwableCode = null,              // catch Throwables matching the given code only
@@ -181,9 +181,9 @@ $this->assertCallableThrowsNot(
 
 ### `CallableProxy` and `CachedCallableProxy`
 
-`PHPUnitThrowableAsserts` invokes callables without arguments and discards a possible return value due to how PHPUnit evaluates values. One solution for this is to use anonymous functions with variable inheritance. As a neat alternative, `PHPUnitThrowableAsserts` provides the [`CallableProxy`](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/CallableProxy.php) and [`CachedCallableProxy`](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/CachedCallableProxy.php) helper classes.
+`PHPUnitThrowableAsserts` invokes Callables without arguments and discards a possible return value due to how PHPUnit evaluates values. One solution for this is to use anonymous functions with variable inheritance. As a neat alternative, `PHPUnitThrowableAsserts` provides the [`CallableProxy`](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/CallableProxy.php) and [`CachedCallableProxy`](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/CachedCallableProxy.php) helper classes.
 
-Both helper classes receive the callable to invoke (argument `$callable`), and the arguments to pass (any following argument, variadic `$arguments`) in their constructor. They furthermore implement PHPUnit's `PHPUnit\Framework\SelfDescribing` interface and the `toString()` method, improving error handling by allowing `PHPUnitThrowableAsserts` to better designate the called method. `CachedCallableProxy` additionally implements the `getReturnValue()` method that returns the cached return value of the callables last invocation.
+Both helper classes receive the Callable to invoke (argument `$callable`), and the arguments to pass (any following argument, variadic `$arguments`) in their constructor. They furthermore implement PHPUnit's `PHPUnit\Framework\SelfDescribing` interface and the `toString()` method, improving error handling by allowing `PHPUnitThrowableAsserts` to better designate the called method. `CachedCallableProxy` additionally implements the `getReturnValue()` method that returns the cached return value of the Callables last invocation.
 
 The `ThrowableAssertsTrait` trait exposes two public methods to create instances of `CallableProxy` and `CachedCallableProxy`: Use `ThrowableAssertsTrait::callableProxy()` to create a new instance of `CallableProxy`, or `ThrowableAssertsTrait::cachedCallableProxy()` to create a new instance of `CachedCallableProxy`.
 
@@ -193,18 +193,18 @@ The `ThrowableAssertsTrait` trait exposes two public methods to create instances
 // create new instance of `PhrozenByte\PHPUnitThrowableAsserts\CallableProxy`
 // using the `PhrozenByte\PHPUnitThrowableAsserts\ThrowableAssertsTrait` trait
 ThrowableAssertsTrait::callableProxy(
-     callable $callable,    // the callable to invoke
-     mixed    ...$arguments // the arguments to pass to the callable
+     callable $callable,    // the Callable to invoke
+     mixed    ...$arguments // the arguments to pass to the Callable
 );
 
 // create new instance of `PhrozenByte\PHPUnitThrowableAsserts\CachedCallableProxy`
 // using the `PhrozenByte\PHPUnitThrowableAsserts\ThrowableAssertsTrait` trait
 $proxy = ThrowableAssertsTrait::cachedCallableProxy(
-     callable $callable,    // the callable to invoke
-     mixed    ...$arguments // the arguments to pass to the callable
+     callable $callable,    // the Callable to invoke
+     mixed    ...$arguments // the arguments to pass to the Callable
 );
 
-// get return value of the callable (`CachedCallableProxy` only)
+// get return value of the Callable (`CachedCallableProxy` only)
 $proxy->getReturnValue();
 ```
 

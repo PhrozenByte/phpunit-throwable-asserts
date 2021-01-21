@@ -33,7 +33,7 @@ trait ThrowableAssertsTrait
     /**
      * Asserts that a callable throws a specific Throwable.
      *
-     * @param callable               $callable               the callable to call
+     * @param callable               $callable               the Callable to call
      * @param string                 $throwableClassName     assert that a Throwable of the given class is thrown
      * @param Constraint|string|null $throwableMessage       assert that its message matches the given constraint
      * @param int|string|null        $throwableCode          assert that its code matches the given one
@@ -98,7 +98,7 @@ trait ThrowableAssertsTrait
     /**
      * Asserts that a callable does not throw a specific Throwable.
      *
-     * @param callable               $callable               the callable to call
+     * @param callable               $callable               the Callable to call
      * @param string                 $throwableClassName     assert that no Throwable of the given class is thrown
      * @param Constraint|string|null $throwableMessage       catch Throwables matching the given message constraint only
      * @param int|string|null        $throwableCode          catch Throwables matching the given code only
@@ -157,8 +157,8 @@ trait ThrowableAssertsTrait
     /**
      * Returns a new instance of CallableProxy.
      * *
-     * @param callable $callable     the callable to invoke
-     * @param mixed    ...$arguments the arguments to pass to the callable
+     * @param callable $callable     the Callable to invoke
+     * @param mixed    ...$arguments the arguments to pass to the Callable
      *
      * @return CallableProxy
      */
@@ -170,8 +170,8 @@ trait ThrowableAssertsTrait
     /**
      * Returns a new instance of CachedCallableProxy.
      * *
-     * @param callable $callable     the callable to invoke
-     * @param mixed    ...$arguments the arguments to pass to the callable
+     * @param callable $callable     the Callable to invoke
+     * @param mixed    ...$arguments the arguments to pass to the Callable
      *
      * @return CachedCallableProxy
      */

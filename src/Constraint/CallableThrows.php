@@ -25,9 +25,9 @@ use PHPUnit\Framework\InvalidArgumentException;
 use Throwable;
 
 /**
- * Constraint that asserts that a callable throws a specific Throwable.
+ * Constraint that asserts that a Callable throws a specific Throwable.
  *
- * This constraint calls the given callable and catches any Throwable matching
+ * This constraint calls the given Callable and catches any Throwable matching
  * the given base class. Any other Throwable isn't caught. It then asserts that
  * the Throwable's class, message and code match the expected, or throws a
  * ExpectationFailedException otherwise.
@@ -35,7 +35,7 @@ use Throwable;
  * The class name of the expected Throwable, a optional constraint to match the
  * Throwable's message, the optional code to assert, whether an exact match of
  * the Throwable's class is required, and the Throwable base class name are
- * passed in the constructor. The callable is the value to evaluate.
+ * passed in the constructor. The Callable is the value to evaluate.
  */
 class CallableThrows extends AbstractCallableThrows
 {

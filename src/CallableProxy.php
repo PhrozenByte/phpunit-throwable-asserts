@@ -25,9 +25,9 @@ use ReflectionException;
 use ReflectionFunction;
 
 /**
- * A simple proxy class for callables.
+ * A simple proxy class for Callables.
  *
- * This is a helper class to invoke a callable using a given set of arguments.
+ * This is a helper class to invoke a Callable using a given set of arguments.
  * CallableProxy's advantage over an anonymous function is the fact, that it
  * can describe itself and doesn't just end up being called `{closure}()`.
  */
@@ -42,8 +42,8 @@ class CallableProxy implements SelfDescribing
     /**
      * CallableProxy constructor.
      *
-     * @param callable $callable     the callable to invoke
-     * @param mixed    ...$arguments the arguments to pass to the callable
+     * @param callable $callable     the Callable to invoke
+     * @param mixed    ...$arguments the arguments to pass to the Callable
      */
     public function __construct(callable $callable, ...$arguments)
     {
@@ -52,7 +52,7 @@ class CallableProxy implements SelfDescribing
     }
 
     /**
-     * Invokes the callable with the given arguments.
+     * Invokes the Callable with the given arguments.
      *
      * @return mixed
      */
@@ -63,14 +63,14 @@ class CallableProxy implements SelfDescribing
     }
 
     /**
-     * Returns a human-readable string representation of the callable.
+     * Returns a human-readable string representation of the Callable.
      *
      * All strings match the format `<function>()` or `<class>::<function>()`.
      * `{closure}` as function name describes a anonymous function, optionally
-     * also indicating the Closure's scope as class. If a callable's function
+     * also indicating the Closure's scope as class. If a Callable's function
      * name is unknown, `{callable}` is returned.
      *
-     * @return string string representation of the callable
+     * @return string string representation of the Callable
      */
     public function toString(): string
     {
@@ -105,7 +105,7 @@ class CallableProxy implements SelfDescribing
 
                     return sprintf('%s()', $closureName);
                 } catch (ReflectionException $e) {
-                    // ReflectionException is never thrown, the callable typehint ensures a valid function
+                    // ReflectionException is never thrown, the Callable typehint ensures a valid function
                     return '{closure}()';
                 }
             }
@@ -114,7 +114,7 @@ class CallableProxy implements SelfDescribing
         }
 
         // fallback to '{callable}()' if all else fails
-        // this is for future PHP versions implementing new ways to describe callables
+        // this is for future PHP versions implementing new ways to describe Callables
         return '{callable}()';
     }
 }
