@@ -31,5 +31,8 @@ jobs:
             -   name: Install dependencies
                 run: composer update --prefer-dist --no-progress
 
+            -   name: Run Psalm static code analysis
+                run: ./vendor/bin/psalm
+
             -   name: Run PHPUnit test suite
                 run: ./vendor/bin/phpunit --configuration ./tests/phpunit.xml
