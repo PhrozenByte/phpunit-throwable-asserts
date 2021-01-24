@@ -104,9 +104,12 @@ class CallableProxy implements SelfDescribing
                     }
 
                     return sprintf('%s()', $closureName);
+
+                    // @codeCoverageIgnoreStart
                 } catch (ReflectionException $e) {
                     // ReflectionException is never thrown, the Callable typehint ensures a valid function
                     return '{closure}()';
+                    // @codeCoverageIgnoreEnd
                 }
             }
 
@@ -115,6 +118,6 @@ class CallableProxy implements SelfDescribing
 
         // fallback to '{callable}()' if all else fails
         // this is for future PHP versions implementing new ways to describe Callables
-        return '{callable}()';
+        return '{callable}()'; // @codeCoverageIgnore
     }
 }

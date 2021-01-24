@@ -1,0 +1,201 @@
+# PHPUnitThrowableAssertions - Throwable-related PHPUnit assertions.
+#
+# @copyright Copyright (c) 2021, Daniel Rudolf (<https://www.daniel-rudolf.de>)
+#
+# This file is copyrighted by the contributors recorded in the version control
+# history of the file, available from the following original location:
+#
+# <https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/tests/data/CallableThrowsNotTest.yml>
+#
+# @license http://opensource.org/licenses/MIT The MIT License
+#
+# SPDX-License-Identifier: MIT
+# License-Filename: LICENSE
+
+~anchors:
+    defaultParams: &defaultParams
+        className: Throwable
+        message: ~
+        code: ~
+        exactMatch: false
+
+testInvalidParameters:
+    -   <<: *defaultParams
+        className: No class name
+        expectedException: PHPUnit\Framework\InvalidArgumentException
+        expectedExceptionMessage: >-
+            Argument #1 of PhrozenByte\PHPUnitThrowableAsserts\Constraint\AbstractCallableThrows::__construct()
+            must be an instance of Throwable
+
+testSelfDescribing:
+    -   <<: *defaultParams
+        className: Exception
+        expectedDescription: does not throw a Exception
+    -   <<: *defaultParams
+        className: Exception
+        message: Something went wrong
+        expectedDescription: does not throw a Exception whose message is equal to 'Something went wrong'
+    -   <<: *defaultParams
+        className: Exception
+        code: 123
+        expectedDescription: does not throw a Exception with code 123
+    -   <<: *defaultParams
+        className: Exception
+        message: Something went wrong
+        code: 123
+        expectedDescription: does not throw a Exception with code 123 and whose message is equal to 'Something went wrong'
+    -   <<: *defaultParams
+        className: Exception
+        message:
+            ~object: PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\TestConstraint
+            options:
+                toString: is awesome
+        expectedDescription: does not throw a Exception whose message is awesome
+    -   <<: *defaultParams
+        className: Exception
+        message:
+            ~object: PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\TestConstraint
+            options:
+                toString: is awesome
+        code: 123
+        expectedDescription: does not throw a Exception with code 123 and whose message is awesome
+
+    -   <<: *defaultParams
+        className: Exception
+        exactMatch: true
+        expectedDescription: does not throw a Exception (exact match)
+    -   <<: *defaultParams
+        className: Exception
+        message: Something went wrong
+        exactMatch: true
+        expectedDescription: does not throw a Exception (exact match) whose message is equal to 'Something went wrong'
+    -   <<: *defaultParams
+        className: Exception
+        code: 123
+        exactMatch: true
+        expectedDescription: does not throw a Exception (exact match) with code 123
+    -   <<: *defaultParams
+        className: Exception
+        message: Something went wrong
+        code: 123
+        exactMatch: true
+        expectedDescription: does not throw a Exception (exact match) with code 123 and whose message is equal to 'Something went wrong'
+    -   <<: *defaultParams
+        className: Exception
+        message:
+            ~object: PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\TestConstraint
+            options:
+                toString: is awesome
+        exactMatch: true
+        expectedDescription: does not throw a Exception (exact match) whose message is awesome
+    -   <<: *defaultParams
+        className: Exception
+        message:
+            ~object: PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\TestConstraint
+            options:
+                toString: is awesome
+        code: 123
+        exactMatch: true
+        expectedDescription: does not throw a Exception (exact match) with code 123 and whose message is awesome
+
+testEvaluate:
+    -   <<: *defaultParams
+        other:
+            ~closureReturn: does not throw
+    -   <<: *defaultParams
+        className: Exception
+        message: Something went wrong
+        other:
+            ~closureReturn: does not throw
+
+testEvaluateFail:
+    -   <<: *defaultParams
+        other:
+            ~closureThrow:
+                ~object: Exception
+        expectedException: PHPUnit\Framework\ExpectationFailedException
+        expectedExceptionMessage: |-
+            Failed asserting that PhrozenByte\PHPUnitThrowableAsserts\Tests\TestCase::{closure}() does not throw a Throwable.
+            Encountered invalid Exception without a message.
+
+testEvaluateRethrow:
+    -   <<: *defaultParams
+        className: Exception
+        other:
+            ~closureThrow:
+                ~object: Error
+                message: Unrelated PHP error
+        expectedException: Error
+        expectedExceptionMessage: Unrelated PHP error
+    -   <<: *defaultParams
+        message: Something went wrong
+        other:
+            ~closureThrow:
+                ~object: Exception
+                message: Exception with different message
+        expectedException: Exception
+        expectedExceptionMessage: Exception with different message
+    -   <<: *defaultParams
+        message:
+            message:
+                ~object: PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\TestConstraint
+        other:
+            ~closureThrow:
+                ~object: Exception
+                message: Message constraint did not match
+        expectedException: Exception
+        expectedExceptionMessage: Message constraint did not match
+    -   <<: *defaultParams
+        code: 123
+        other:
+            ~closureThrow:
+                ~object: Exception
+                message: Exception with different code
+                code: 456
+        expectedException: Exception
+        expectedExceptionMessage: Exception with different code
+    -   <<: *defaultParams
+        className: Exception
+        exactMatch: true
+        other:
+            ~closureThrow:
+                ~object: ErrorException
+                message: Non-matching ErrorException
+        expectedException: ErrorException
+        expectedExceptionMessage: Non-matching ErrorException
+
+testCountable:
+    -   <<: *defaultParams
+        expectedCount: 1
+    -   <<: *defaultParams
+        message: Something went wrong
+        expectedCount: 2
+    -   <<: *defaultParams
+        code: 123
+        expectedCount: 2
+    -   <<: *defaultParams
+        message: Something went wrong
+        code: 123
+        expectedCount: 3
+    -   <<: *defaultParams
+        message:
+            ~object: PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\TestConstraint
+            options:
+                count: 0
+        expectedCount: 1
+    -   <<: *defaultParams
+        message:
+            ~object: PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\TestConstraint
+            options:
+                count: 1
+        expectedCount: 2
+    -   <<: *defaultParams
+        message:
+            ~object: PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\TestConstraint
+            options:
+                count: 2
+        code: 123
+        expectedCount: 4
+    -   <<: *defaultParams
+        exactMatch: true
+        expectedCount: 1

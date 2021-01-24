@@ -20,10 +20,20 @@
             "PhrozenByte\\PHPUnitThrowableAsserts\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "PhrozenByte\\PHPUnitThrowableAsserts\\Tests\\": "tests"
+        }
+    },
     "require": {
         "php": "^7.2 || ^8.0"
     },
     "conflict": {
         "phpunit/phpunit": "<8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8",
+        "mockery/mockery": "^1.3",
+        "symfony/yaml": "^5.2"
     }
 }

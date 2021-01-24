@@ -91,7 +91,7 @@ abstract class AbstractCallableThrows extends Constraint
 
         $additionalFailureDescription = $this->additionalFailureDescription($other);
         if ($additionalFailureDescription) {
-            $failureDescription .= "\n" . $additionalFailureDescription;
+            $failureDescription .= "\n" . $additionalFailureDescription; // @codeCoverageIgnore
         }
 
         if ($description) {
