@@ -40,7 +40,7 @@ There are three (equivalent) options to use `PHPUnitThrowableAssertions`:
 
 All options do exactly the same. Creating new constraint instances is useful for advanced assertions, e.g. together with `PHPUnit\Framework\Constraint\LogicalAnd`.
 
-If you want to pass arguments to your Callable, you might want to use [`CallableProxy`](#callableproxy-and-cachedcallableproxy). If you must access the Callable's return value, use `CachedCallableProxy` instead (specifically its `getReturnValue()` method). Using `CallableProxy` vastly improves error handling.
+If you want to pass arguments to your Callable, you might want to use [`CallableProxy`](#callableproxy-and-cachedcallableproxy). If you want to access the Callable's return value or a possibly thrown Throwable, use `CachedCallableProxy` instead (specifically its `getReturnValue()` and `getThrowable()` methods). Using `CallableProxy` vastly improves error handling.
 
 As explained above, `PHPUnitThrowableAssertions` is a more powerful alternative to PHPUnit's built-in `expectException()`. However, please note that PHPUnit's built-in `expectExceptionMessage()` matches sub strings (i.e. `$this->expectExceptionMessage('test')` doesn't just match the message `"test"`, but also `"This is a test"`), while `PHPUnitThrowableAssertions` checks for equality by default (i.e. `$message = 'test'` matches the message `"test"` only). However, `PHPUnitThrowableAssertions` allows you to not just use strings, but also arbitrary constraints. So, for example, to achieve sub string matching, pass an instance of the `PHPUnit\Framework\Constraint\StringContains` constraint instead (i.e. `$message = $this->stringContains('test')` also matches the message `"This is a test"`).
 
@@ -183,7 +183,7 @@ $this->assertCallableThrowsNot(
 
 `PHPUnitThrowableAsserts` invokes Callables without arguments and discards a possible return value due to how PHPUnit evaluates values. One solution for this is to use anonymous functions with variable inheritance. As a neat alternative, `PHPUnitThrowableAsserts` provides the [`CallableProxy`](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/CallableProxy.php) and [`CachedCallableProxy`](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/src/CachedCallableProxy.php) helper classes.
 
-Both helper classes receive the Callable to invoke (argument `$callable`), and the arguments to pass (any following argument, variadic `$arguments`) in their constructor. They furthermore implement PHPUnit's `PHPUnit\Framework\SelfDescribing` interface and the `toString()` method, improving error handling by allowing `PHPUnitThrowableAsserts` to better designate the called method. `CachedCallableProxy` additionally implements the `getReturnValue()` method that returns the cached return value of the Callables last invocation.
+Both helper classes receive the Callable to invoke (argument `$callable`), and the arguments to pass (any following argument, variadic `$arguments`) in their constructor. They furthermore implement PHPUnit's `PHPUnit\Framework\SelfDescribing` interface and the `toString()` method, improving error handling by allowing `PHPUnitThrowableAsserts` to better designate the called method. `CachedCallableProxy` additionally implements the `getReturnValue()` and `getThrowable()` methods. `getReturnValue()` returns the cached return value of the Callables last invocation, while `getThrowable()` returns a possibly thrown `Throwable`.
 
 The `ThrowableAssertsTrait` trait exposes two public methods to create instances of `CallableProxy` and `CachedCallableProxy`: Use `ThrowableAssertsTrait::callableProxy()` to create a new instance of `CallableProxy`, or `ThrowableAssertsTrait::cachedCallableProxy()` to create a new instance of `CachedCallableProxy`.
 
@@ -206,6 +206,9 @@ $proxy = ThrowableAssertsTrait::cachedCallableProxy(
 
 // get return value of the Callable (`CachedCallableProxy` only)
 $proxy->getReturnValue();
+
+// get a possibly thrown Throwable (`CachedCallableProxy` only)
+$proxy->getThrowable();
 ```
 
 **Example:**

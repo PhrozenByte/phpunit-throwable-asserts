@@ -19,32 +19,55 @@ declare(strict_types=1);
 
 namespace PhrozenByte\PHPUnitThrowableAsserts;
 
+use Throwable;
+
 /**
- * A simple proxy class for Callables with return value caching.
+ * A simple proxy class for Callables with return value and Throwable caching.
  *
  * @see CallableProxy
  */
 class CachedCallableProxy extends CallableProxy
 {
-    /** @var mixed */
+    /** @var mixed|null */
     protected $returnValue;
+
+    /** @var Throwable|null */
+    protected $throwable;
 
     /**
      * {@inheritDoc}
      */
     public function __invoke()
     {
-        $this->returnValue = parent::__invoke();
-        return $this->returnValue;
+        $this->returnValue = null;
+        $this->throwable = null;
+
+        try {
+            $this->returnValue = parent::__invoke();
+            return $this->returnValue;
+        } catch (Throwable $throwable) {
+            $this->throwable = $throwable;
+            throw $this->throwable;
+        }
     }
 
     /**
      * Returns the cached return value of the Callable from its last invocation.
      *
-     * @return mixed
+     * @return mixed|null the cached return value of the Callable, or NULL
      */
     public function getReturnValue()
     {
         return $this->returnValue;
+    }
+
+    /**
+     * Returns the Throwable that was thrown at the Callable's last invocation.
+     *
+     * @return Throwable|null the cached Throwable the Callable threw, or NULL
+     */
+    public function getThrowable(): ?Throwable
+    {
+        return $this->throwable;
     }
 }
