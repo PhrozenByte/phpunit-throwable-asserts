@@ -22,9 +22,8 @@ namespace PhrozenByte\PHPUnitThrowableAsserts;
 /**
  * A set of throwable-related assertion methods.
  *
- * This static class just uses the `ThrowableAssertsTrait` trait. Refer to
- * {@class PhrozenByte\PHPUnitThrowableAsserts\ThrowableAssertsTrait} for
- * more info.
+ * This static class just uses the {@see ThrowableAssertsTrait} trait. Refer to
+ * {@see ThrowableAssertsTrait} for more info.
  */
 class Assert
 {

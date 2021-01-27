@@ -21,7 +21,6 @@ namespace PhrozenByte\PHPUnitThrowableAsserts\Constraint;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
-use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidArgumentException;
 use PhrozenByte\PHPUnitThrowableAsserts\CallableProxy;
@@ -31,6 +30,8 @@ use Throwable;
 /**
  * Abstract base class for the `CallableThrows` and `CallableThrowsNot`
  * constraints implementing some common methods.
+ *
+ * @internal
  */
 abstract class AbstractCallableThrows extends Constraint
 {
@@ -54,7 +55,7 @@ abstract class AbstractCallableThrows extends Constraint
      * @param int|string|null        $code       value to match the Throwable's code
      * @param bool                   $exactMatch whether an exact match of the Throwable's class is required
      *
-     * @throws PHPUnitException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $className, $message, $code, bool $exactMatch)
     {
@@ -74,7 +75,16 @@ abstract class AbstractCallableThrows extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * Throws a ExpectationFailedException exception for the compared value.
+     *
+     * @param mixed                  $other             evaluated value or object
+     * @param string                 $description       additional information about the test
+     * @param ComparisonFailure|null $comparisonFailure additional information about string inequality
+     * @param Throwable|null         $throwable         instance of a unexpectedly thrown Throwable
+     *
+     * @throws ExpectationFailedException
+     *
+     * @psalm-return never-return
      */
     protected function fail(
         $other,
@@ -105,7 +115,7 @@ abstract class AbstractCallableThrows extends Constraint
     }
 
     /**
-     * Returns additional failure description for a Throwable
+     * Returns additional failure description for a Throwable.
      *
      * @param Throwable|null $throwable the Throwable that was thrown
      *
@@ -133,7 +143,14 @@ abstract class AbstractCallableThrows extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the description of the failure.
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param mixed $other the evaluated value
+     *
+     * @return string the failure description
      */
     protected function failureDescription($other): string
     {
@@ -149,7 +166,7 @@ abstract class AbstractCallableThrows extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the number of assertions performed by this Constraint.
      */
     public function count(): int
     {

@@ -28,6 +28,23 @@ use PhrozenByte\PHPUnitThrowableAsserts\Constraint\CallableThrows;
 use PhrozenByte\PHPUnitThrowableAsserts\Constraint\CallableThrowsNot;
 use Throwable;
 
+/**
+ * A set of Throwable-related assertion methods.
+ *
+ * This trait implements an assertion method and constraint creation method per
+ * implemented constraint, namely
+ *
+ * - the `assertCallableThrows()` and `callableThrows()` methods for
+ *   {@see CallableThrows}, and
+ * - the `assertCallableThrowsNot()` and `callableThrowsNot()` methods for
+ *   {@see CallableThrowsNot}.
+ *
+ * This trait additionally implements some helper methods to create new
+ * instances of the callable proxy classes, namely
+ *
+ * - the `callableProxy()` method for {@see CallableProxy}, and
+ * - the `cachedCallableProxy()` method for {@see CachedCallableProxy}.
+ */
 trait ThrowableAssertsTrait
 {
     /**
@@ -156,7 +173,7 @@ trait ThrowableAssertsTrait
 
     /**
      * Returns a new instance of CallableProxy.
-     * *
+     *
      * @param callable $callable     the Callable to invoke
      * @param mixed    ...$arguments the arguments to pass to the Callable
      *
@@ -169,7 +186,7 @@ trait ThrowableAssertsTrait
 
     /**
      * Returns a new instance of CachedCallableProxy.
-     * *
+     *
      * @param callable $callable     the Callable to invoke
      * @param mixed    ...$arguments the arguments to pass to the Callable
      *

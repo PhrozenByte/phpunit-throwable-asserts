@@ -22,6 +22,7 @@ namespace PhrozenByte\PHPUnitThrowableAsserts\Constraint;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\InvalidArgumentException;
 use Throwable;
 
 /**
@@ -52,7 +53,7 @@ class CallableThrowsNot extends AbstractCallableThrows
      * @param int|string|null        $code       catch Throwables with the given code only
      * @param bool                   $exactMatch whether an exact match of the Throwable class is caught only
      *
-     * @throws PHPUnitException
+     * @throws InvalidArgumentException
      */
     public function __construct(
         string $className = Throwable::class,
@@ -64,7 +65,9 @@ class CallableThrowsNot extends AbstractCallableThrows
     }
 
     /**
-     * @inheritDoc
+     * Returns a human-readable string representation of this Constraint.
+     *
+     * @return string string representation of the Constraint
      */
     public function toString(): string
     {
@@ -76,7 +79,23 @@ class CallableThrowsNot extends AbstractCallableThrows
     }
 
     /**
-     * {@inheritDoc}
+     * Evaluates whether the given value matches the Constraint.
+     *
+     * If `$returnResult` is set to `false` (default), an exception is thrown
+     * in case of a failure. `null` is returned otherwise.
+     *
+     * If `$returnResult` is `true`, the result of the evaluation is returned
+     * as a boolean instead: `true` in case of success, `false` in case of a
+     * failure.
+     *
+     * @param mixed  $other        the value to evaluate
+     * @param string $description  additional information about the test
+     * @param bool   $returnResult whether to return the evaluation result
+     *
+     * @return bool|null evaluation result if `$returnResult` is set `true`
+     *
+     * @throws ExpectationFailedException
+     * @throws PHPUnitException
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
