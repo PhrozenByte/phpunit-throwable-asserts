@@ -1,6 +1,9 @@
 PHPUnitThrowableAssertions
 ==========================
 
+[![MIT license](https://raw.githubusercontent.com/PhrozenByte/phpunit-throwable-asserts/master/.github/license.svg)](https://github.com/PhrozenByte/phpunit-throwable-asserts/blob/master/LICENSE)
+[![Code coverage](https://raw.githubusercontent.com/PhrozenByte/phpunit-throwable-asserts/master/.github/coverage.svg)](https://github.com/PhrozenByte/phpunit-throwable-asserts)
+
 [`PHPUnitThrowableAssertions`](https://github.com/PhrozenByte/phpunit-throwable-asserts) is a small [PHPUnit](https://phpunit.de/) extension to assert that Callables do or do not throw a specific Exception, Error, or Throwable.
 
 This PHPUnit extension allows developers to test whether Callables throw Exceptions, Errors and other Throwables in a single assertion using the more intuitive "assert that" approach. It's a replacement for PHPUnit's built-in `expectException()`, `expectExceptionMessage()` and `expectExceptionCode()` methods - just more powerful.
