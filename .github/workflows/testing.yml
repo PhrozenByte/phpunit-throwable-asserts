@@ -35,4 +35,4 @@ jobs:
                 run: ./vendor/bin/psalm
 
             -   name: Run PHPUnit test suite
-                run: ./vendor/bin/phpunit --configuration ./tests/phpunit.xml
+                run: ./vendor/bin/phpunit
