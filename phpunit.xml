@@ -15,18 +15,22 @@
   ~ License-Filename: LICENSE
   -->
 
-<phpunit bootstrap="./vendor/autoload.php">
-	<testsuites>
-		<testsuite name="phpunit-throwable-asserts">
-			<directory>./tests/Unit</directory>
-		</testsuite>
-	</testsuites>
-	<filter>
-		<whitelist>
-			<directory suffix=".php">./src</directory>
-		</whitelist>
-	</filter>
-	<logging>
-		<log type="coverage-clover" target="clover.xml"/>
-	</logging>
+<phpunit
+    bootstrap="./vendor/autoload.php"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.4/phpunit.xsd"
+>
+    <testsuites>
+        <testsuite name="phpunit-throwable-asserts">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
 </phpunit>
