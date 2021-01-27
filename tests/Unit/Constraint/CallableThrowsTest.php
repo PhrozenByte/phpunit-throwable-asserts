@@ -29,6 +29,9 @@ use PhrozenByte\PHPUnitThrowableAsserts\Tests\TestCase;
  * PHPUnit unit test for the CallableThrows constraint.
  *
  * @see CallableThrows
+ *
+ * @covers \PhrozenByte\PHPUnitThrowableAsserts\Constraint\CallableThrows
+ * @covers \PhrozenByte\PHPUnitThrowableAsserts\Constraint\AbstractCallableThrows
  */
 class CallableThrowsTest extends TestCase
 {

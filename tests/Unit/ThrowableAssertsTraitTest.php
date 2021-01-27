@@ -44,6 +44,9 @@ use Throwable;
  * @see ThrowableAssertsTrait
  * @see Assert
  *
+ * @covers \PhrozenByte\PHPUnitThrowableAsserts\ThrowableAssertsTrait
+ * @covers \PhrozenByte\PHPUnitThrowableAsserts\Assert
+ *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */

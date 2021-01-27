@@ -30,6 +30,8 @@ use PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\InvocableClass;
  * PHPUnit unit test for the CachedCallableProxy helper class.
  *
  * @see CachedCallableProxy
+ *
+ * @covers \PhrozenByte\PHPUnitThrowableAsserts\CachedCallableProxy
  */
 class CachedCallableProxyTest extends TestCase
 {

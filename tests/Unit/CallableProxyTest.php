@@ -30,6 +30,8 @@ use PhrozenByte\PHPUnitThrowableAsserts\Tests\Utils\InvocableClass;
  * PHPUnit unit test for the CallableProxy helper class.
  *
  * @see CallableProxy
+ *
+ * @covers \PhrozenByte\PHPUnitThrowableAsserts\CallableProxy
  */
 class CallableProxyTest extends TestCase
 {
