@@ -68,6 +68,7 @@ class CallableProxyTest extends TestCase
             [ Closure::bind(function () {}, new Exception(), null), [], 'Exception::{closure}()' ],
             [ Closure::bind(function () {}, new Exception(), InvocableClass::class), [], 'Exception::{closure}()' ],
             [ Closure::bind(function () {}, null, InvocableClass::class), [], InvocableClass::class . '::{closure}()' ],
+            [ new CallableProxy('count'), [], 'count()' ],
             [ new InvocableClass(), [], InvocableClass::class . '::__invoke()' ],
         ];
     }

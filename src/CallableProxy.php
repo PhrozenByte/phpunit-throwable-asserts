@@ -113,6 +113,10 @@ class CallableProxy implements SelfDescribing
                 }
             }
 
+            if ($this->callable instanceof self) {
+                return $this->callable->toString();
+            }
+
             return sprintf('%s::__invoke()', get_class($this->callable));
         }
 
