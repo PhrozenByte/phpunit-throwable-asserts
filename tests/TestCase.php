@@ -146,6 +146,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
      * method. It e.g. doesn't incorporates a Closure's scope, but works for
      * testing `PHPUnitThrowableAsserts`.
      *
+     * @psalm-suppress RedundantCondition
+     *
      * @param callable $callable the Callable to describe
      *
      * @return string string representation of the Callable

@@ -56,6 +56,7 @@ class InvocableClass
     public function __invoke(...$arguments): array
     {
         if ($this->throwableClassName !== null) {
+            /** @psalm-var class-string<Throwable> $className */
             $className = $this->throwableClassName;
             throw new $className(...$this->throwableArguments);
         }

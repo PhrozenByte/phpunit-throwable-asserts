@@ -52,6 +52,8 @@ class CallableProxyTest extends TestCase
     }
 
     /**
+     * @psalm-suppress NullArgument
+     *
      * @return array
      */
     public function dataProviderSelfDescribing(): array

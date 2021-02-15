@@ -98,6 +98,7 @@ class ThrowableAssertsTraitTest extends TestCase
         array $callableExceptionData
     ): void {
         $callable = static function () use ($callableExceptionData) {
+            /** @psalm-var class-string<Throwable> $className */
             $className = array_shift($callableExceptionData);
             throw new $className(...$callableExceptionData);
         };
