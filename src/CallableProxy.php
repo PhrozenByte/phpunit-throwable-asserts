@@ -91,6 +91,12 @@ class CallableProxy implements SelfDescribing
                     $closureName = $closureReflector->getName();
                     if (substr_compare($closureName, '\\{closure}', -10) === 0) {
                         $closureName = '{closure}';
+                        // @codeCoverageIgnoreStart
+                    } elseif (substr_compare($closureName, '{closure:', 0, 9) === 0) {
+                        // TODO: PHP 8.4 adds a new closure name format matching '{closure:CLASS::METHOD:LINENO}'
+                        // since we want to preserve BC here we unfortunately can't use that additional information
+                        $closureName = '{closure}';
+                        // @codeCoverageIgnoreEnd
                     }
 
                     if ($closureReflector->getClosureThis() !== null) {
