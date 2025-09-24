@@ -54,7 +54,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public function assertCallableThrows(
         callable $callable,
         string $throwableClassName = Throwable::class,
-        string $throwableMessage = null
+        ?string $throwableMessage = null
     ): void {
         $throwableFailure = '';
         $throwableComparisonFailure = null;
@@ -108,7 +108,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public function assertCallableThrowsNot(
         callable $callable,
         string $throwableClassName = Throwable::class,
-        string $throwableMessage = null
+        ?string $throwableMessage = null
     ): void {
         try {
             $callable();

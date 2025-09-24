@@ -38,7 +38,7 @@ class InvocableClass
      * @param string|null $throwableClassName    the Throwable's class name to thrown when invoked
      * @param mixed       ...$throwableArguments the arguments to pass to the Throwable
      */
-    public function __construct(string $throwableClassName = null, ...$throwableArguments)
+    public function __construct(?string $throwableClassName = null, ...$throwableArguments)
     {
         $this->throwableClassName = $throwableClassName;
         $this->throwableArguments = $throwableArguments;

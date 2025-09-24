@@ -89,8 +89,8 @@ abstract class AbstractCallableThrows extends Constraint
     protected function fail(
         $other,
         $description,
-        ComparisonFailure $comparisonFailure = null,
-        Throwable $throwable = null
+        ?ComparisonFailure $comparisonFailure = null,
+        ?Throwable $throwable = null
     ): void {
         $failureDescription = sprintf('Failed asserting that %s.', $this->failureDescription($other));
 
